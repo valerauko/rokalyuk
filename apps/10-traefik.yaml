@@ -39,9 +39,7 @@ spec:
               enabled: true
               certResolver: letsencrypt
               domains:
-                - main: "kitsune.social"
-                  # sans:
-                  #   - argo.kitsune.social
+                - main: "test.kitsune.social"
         providers:
           kubernetesIngress:
             publishedService:
