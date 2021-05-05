@@ -25,17 +25,16 @@ spec:
           - "--certificatesresolvers.letsencrypt.acme.email=valerauko@gmail.com"
           - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
           - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+          - "--experimental.http3=true"
+          - "--entrypoints.websecure.enablehttp3=true"
         persistence:
           enabled: true
           size: 32Mi
           storageClass: local-path
-        experimental:
-          http3: true
         ports:
           web:
             redirectTo: websecure
           websecure:
-            enableHTTP3: true
             tls:
               enabled: true
               certResolver: letsencrypt
