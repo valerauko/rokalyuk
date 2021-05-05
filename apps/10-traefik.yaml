@@ -42,6 +42,8 @@ spec:
                     - argo.kitsune.social
         providers:
           kubernetesIngress:
+            publishedService:
+              enabled: true
             namespaces:
               - argo-cd
               - default
