@@ -39,6 +39,8 @@ spec:
             minVersion: VersionTLS13
             sniStrict: true
         logs:
+          general:
+            level: INFO
           access:
             enabled: true
         ingressRoute:
