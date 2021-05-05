@@ -21,6 +21,8 @@ spec:
             prometheus.io/scrape: "true"
             prometheus.io/path: "/metrics"
             prometheus.io/port: "9100"
+        additionalArguments:
+          - "--certificateresolvers.letsencrypt.acme.email=valerauko@gmail.com"
         ports:
           web:
             redirectTo: websecure
