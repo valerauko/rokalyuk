@@ -29,12 +29,13 @@ spec:
           enabled: true
           size: 32Mi
           storageClass: local-path
+        experimental:
+          http3: true
         ports:
           web:
-            hostIP: 74.220.18.32
             redirectTo: websecure
           websecure:
-            hostIP: 74.220.18.32
+            enableHTTP3: true
             tls:
               enabled: true
               certResolver: letsencrypt
