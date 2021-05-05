@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  namespace: argo-cd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: system
+  source:
+    repoURL: https://helm.traefik.io/traefik
+    chart: traefik
+    targetRevision: "9.*"
+
+    helm:
+      releaseName: traefik
+
+      values: |
+        deployment:
+          podAnnotations:
+            prometheus.io/scrape: "true"
+            prometheus.io/path: "/metrics"
+            prometheus.io/port: "9100"
+        ports:
+          web:
+            redirectTo: websecure
+          websecure:
+            tls:
+              enabled: true
+              certResolver: letsencrypt
+              domains:
+                - main: "kitsune.social"
+                  sans:
+                    - argo.kitsune.social
+        tlsOptions:
+          default:
+            minVersion: VersionTLS13
+            sniStrict: true
+        logs:
+          access:
+            enabled: true
+        ingressRoute:
+          dashboard:
+            enabled: false
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+
+  syncPolicy:
+    automated:
+      selfHeal: true
