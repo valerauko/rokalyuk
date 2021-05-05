@@ -24,6 +24,7 @@ spec:
         additionalArguments:
           - "--certificatesresolvers.letsencrypt.acme.email=valerauko@gmail.com"
           - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
+          - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
         persistence:
           enabled: true
           size: 32Mi
