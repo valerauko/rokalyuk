@@ -23,6 +23,10 @@ spec:
             prometheus.io/port: "9100"
         additionalArguments:
           - "--certificatesresolvers.letsencrypt.acme.email=valerauko@gmail.com"
+          - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
+        persistence:
+          enabled: true
+          size: 32Mi
         ports:
           web:
             redirectTo: websecure
