@@ -32,7 +32,9 @@ spec:
         ports:
           web:
             redirectTo: websecure
+            nodePort: 80
           websecure:
+            nodePort: 443
             tls:
               enabled: true
               certResolver: letsencrypt
