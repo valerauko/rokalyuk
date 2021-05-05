@@ -27,6 +27,7 @@ spec:
         persistence:
           enabled: true
           size: 32Mi
+          storageClass: local-path
         ports:
           web:
             redirectTo: websecure
