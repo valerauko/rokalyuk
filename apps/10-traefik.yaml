@@ -42,7 +42,6 @@ spec:
                     - argo.kitsune.social
         providers:
           kubernetesIngress:
-            labelSelector: "kubernetes.io/ingress.class=traefik"
             namespaces:
               - argo-cd
               - default
