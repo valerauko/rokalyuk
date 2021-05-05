@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: projects
+  namespace: argo-cd
+  annotations:
+    argocd.argoproj.io/sync-wave: "08"
+spec:
+  description: Various projects
+
+  sourceRepos:
+  - '*'
+
+  destinations:
+  - namespace: default
+    server: https://kubernetes.default.svc

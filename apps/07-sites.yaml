@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: sites
+  namespace: argo-cd
+  annotations:
+    argocd.argoproj.io/sync-wave: "07"
+spec:
+  description: Static and WP sites
+
+  sourceRepos:
+  - '*'
+
+  destinations:
+  - namespace: default
+    server: https://kubernetes.default.svc
