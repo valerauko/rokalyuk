@@ -40,6 +40,12 @@ spec:
                 - main: "kitsune.social"
                   sans:
                     - argo.kitsune.social
+        providers:
+          kubernetesIngress:
+            labelSelector: "kubernetes.io/ingress.class=traefik"
+            namespaces:
+              - argo-cd
+              - default
         tlsOptions:
           default:
             minVersion: VersionTLS13
