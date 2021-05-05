@@ -31,10 +31,12 @@ spec:
           storageClass: local-path
         ports:
           web:
+            expose: true
+            exposedPort: 80
             redirectTo: websecure
-            nodePort: 80
           websecure:
-            nodePort: 443
+            expose: true
+            exposedPort: 443
             tls:
               enabled: true
               certResolver: letsencrypt
