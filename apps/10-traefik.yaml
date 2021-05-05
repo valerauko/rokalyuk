@@ -45,10 +45,6 @@ spec:
             namespaces:
               - argo-cd
               - default
-        tlsOptions:
-          default:
-            minVersion: VersionTLS13
-            sniStrict: true
         logs:
           general:
             level: INFO
