@@ -14,7 +14,7 @@ jobs:
         id: commit-check
         run: |
           set -euo pipefail
-          current=$(sed -nr 's/\s+tag: ".+-(\w+)"/\1/p' apps/10-traefik.yaml)
+          current=$(sed -nr 's/\s+tag: ".+-(\w+)"/\1/p' apps/11-traefik.yaml)
           cd traefik
           latest=$(git rev-parse --short HEAD)
           different=$([ "$current" == "$latest" ] && echo 'false' || echo 'true')
@@ -48,13 +48,13 @@ jobs:
       - name: Update manifest
         if: steps.commit-check.outputs.updated == 'true'
         run: |
-          sed -i -r -e "s/tag: \".*\"/tag: \"${{ steps.build-image.outputs.new-tag }}\"/i" apps/10-traefik.yaml
+          sed -i -r -e "s/tag: \".*\"/tag: \"${{ steps.build-image.outputs.new-tag }}\"/i" apps/11-traefik.yaml
       - name: Commit latest release version
         if: steps.commit-check.outputs.updated == 'true'
         run: |
           set -euo pipefail
           git config --global user.name 'Github Action'
           git config --global user.email 'actions@github.com'
-          git add apps/10-traefik.yaml
+          git add apps/11-traefik.yaml
           git commit -m "Update Traefik image"
           git push
