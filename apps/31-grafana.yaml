@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana
+  namespace: argo-cd
+  annotations:
+    argocd.argoproj.io/sync-wave: "31"
+spec:
+  project: monitoring
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    targetRevision: "*"
+    chart: grafana
+
+    helm:
+      releaseName: grafana
+
+      values: |
+        ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/ingress.class: traefik
+          hosts:
+            - grafana.kitsune.social
+          tls:
+            - hosts:
+                - grafana.kitsune.social
+        persistence:
+          enabled: true
+          type: statefulset
+        plugins:
+          - grafana-piechart-panel
+        dashboards:
+          default:
+            cluster-monitoring-for-kubernetes:
+              gnetId: 10000
+              datasource: Prometheus
+        datasources:
+          datasources.yaml:
+            apiVersion: 1
+            datasources:
+              - name: Prometheus
+                type: prometheus
+                url: http://prometheus-server.monitoring.svc
+                isDefault: true
+              - name: Loki
+                type: loki
+                url: http://loki:3100
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+
+  syncPolicy:
+    automated:
+      selfHeal: true

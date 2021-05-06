@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argo-cd
+  annotations:
+    argocd.argoproj.io/sync-wave: "30"
+spec:
+  project: monitoring
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: "*"
+    chart: prometheus
+
+    helm:
+      releaseName: prometheus
+
+      values: |
+        global:
+          scrape_interval: 10s
+        server:
+          retention: "168h"
+          statefulSet:
+            enabled: true
+        alertmanager:
+          statefulSet:
+            enabled: true
+        networkPolicy:
+          enabled: true
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+
+  syncPolicy:
+    automated:
+      selfHeal: true

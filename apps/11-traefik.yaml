@@ -57,6 +57,7 @@ spec:
             namespaces:
               - argo-cd
               - default
+              - monitoring
         logs:
           general:
             level: INFO
