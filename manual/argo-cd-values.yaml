@@ -6,10 +6,6 @@ controller:
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8082"
-  livenessProbe:
-    timeoutSeconds: "30"
-  readinessProbe:
-    timeoutSeconds: "30"
 server:
   extraArgs:
   - "--insecure"
@@ -19,10 +15,6 @@ server:
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8083"
-  livenessProbe:
-    timeoutSeconds: "30"
-  readinessProbe:
-    timeoutSeconds: "30"
   ingress:
     enabled: true
     annotations:
