@@ -48,7 +48,7 @@ jobs:
       - name: Update manifest
         if: steps.commit-check.outputs.updated == 'true'
         run: |
-          sed -i -r -e "s/tag: \".+\"/tag: \"${{ steps.build-image.outputs.new-tag }}\"/i" apps/10-traefik.yaml
+          sed -i -r -e "s/tag: \".*\"/tag: \"${{ steps.build-image.outputs.new-tag }}\"/i" apps/10-traefik.yaml
       - name: Commit latest release version
         if: steps.commit-check.outputs.updated == 'true'
         run: |
