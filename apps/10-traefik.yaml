@@ -16,6 +16,9 @@ spec:
       releaseName: traefik
 
       values: |
+        image:
+          name: valerauko/traefa
+          tag: "sha-0b48d5d"
         deployment:
           podAnnotations:
             prometheus.io/scrape: "true"
@@ -25,8 +28,8 @@ spec:
           - "--certificatesresolvers.letsencrypt.acme.email=valerauko@gmail.com"
           - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
           - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
-          # - "--experimental.http3=true"
-          # - "--entrypoints.websecure.enablehttp3=true"
+          - "--experimental.http3=true"
+          - "--entrypoints.websecure.enablehttp3=true"
         persistence:
           enabled: true
           size: 32Mi
@@ -39,7 +42,7 @@ spec:
               enabled: true
               certResolver: letsencrypt
               domains:
-                - main: "test.kitsune.social"
+                - main: "kitsune.social"
         providers:
           kubernetesIngress:
             publishedService:
