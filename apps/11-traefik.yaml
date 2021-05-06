@@ -4,7 +4,7 @@ metadata:
   name: traefik
   namespace: argo-cd
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: "11"
 spec:
   project: system
   source:
@@ -27,9 +27,13 @@ spec:
         additionalArguments:
           - "--certificatesresolvers.letsencrypt.acme.email=valerauko@gmail.com"
           - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
-          - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+          - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
+          - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=httpreq"
           - "--experimental.http3=true"
           - "--entrypoints.websecure.enablehttp3=true"
+        env:
+          - name: HTTPREQ_ENDPOINT
+            value: http://panther.kube-system.svc.cluster.local
         persistence:
           enabled: true
           size: 32Mi
@@ -42,7 +46,9 @@ spec:
               enabled: true
               certResolver: letsencrypt
               domains:
-                - main: "kitsune.social"
+                - main: "*.kitsune.social"
+                  sans:
+                    - "kitsune.social"
         providers:
           kubernetesIngress:
             publishedService:
