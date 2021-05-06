@@ -29,7 +29,7 @@ kubectl apply $K8S_DRY -f "$ROKA_ROOT/manual/00-namespaces.yaml"
 helm repo add argo https://argoproj.github.io/argo-helm
 helm install $HELM_DRY --debug -n argo-cd argo-cd argo/argo-cd -f "$ROKA_ROOT/manual/argo-cd-values.yaml"
 
-kubectl apply -f "$ROKA_ROOT/manual/02-system.yaml"
+kubectl apply $K8S_DRY -f "$ROKA_ROOT/manual/02-system.yaml"
 
 # 03
 cat <<EOF | kubectl -n kube-system apply $K8S_DRY -f -
@@ -44,7 +44,8 @@ EOF
 
 kubectl apply $K8S_DRY -f "$ROKA_ROOT/manual/04-bootstrap.yaml"
 
-set +x
+ARGO_PASS=$(kubectl -n argo-cd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+kubectl -n argo-cd delete $K8S_DRY secret argocd-initial-admin-secret
 
 echo
-echo "All set!"
+echo "All set! Your Argo CD password is $ARGO_PASS"
