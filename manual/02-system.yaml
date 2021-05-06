@@ -4,7 +4,7 @@ metadata:
   name: system
   namespace: argo-cd
   annotations:
-    argocd.argoproj.io/sync-wave: "00"
+    argocd.argoproj.io/sync-wave: "02"
 spec:
   description: System stuff
 
