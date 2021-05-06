@@ -29,6 +29,7 @@ spec:
           - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
           - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
           - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=httpreq"
+          - "--certificatesresolvers.letsencrypt.acme.dnschallenge.delaybeforecheck=60"
           - "--experimental.http3=true"
           - "--entrypoints.websecure.enablehttp3=true"
         env:
