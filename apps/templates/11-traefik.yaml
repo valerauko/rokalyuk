@@ -24,8 +24,16 @@ spec:
             prometheus.io/scrape: "true"
             prometheus.io/path: "/metrics"
             prometheus.io/port: "9100"
+          initContainers:
+            - name: volume-permissions
+              image: busybox:1.31.1
+              command: ["sh", "-c", "chmod -Rv 600 /data/*"]
+              volumeMounts:
+                - name: data
+                  mountPath: /data
         additionalArguments:
           - "--certificatesresolvers.letsencrypt.acme.email={{ .Values.email }}"
+          - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
           - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
           - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=httpreq"
           - "--certificatesresolvers.letsencrypt.acme.dnschallenge.delaybeforecheck=60"
@@ -34,6 +42,10 @@ spec:
         env:
           - name: HTTPREQ_ENDPOINT
             value: http://panther.kube-system.svc.cluster.local
+        persistence:
+          enabled: true
+          size: 32Mi
+          storageClass: longhorn
         ports:
           web:
             redirectTo: websecure
