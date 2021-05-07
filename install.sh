@@ -54,6 +54,7 @@ ARGO_PASS=$(kubectl -n argo-cd get secret argocd-initial-admin-secret -o jsonpat
 kubectl -n argo-cd delete secret argocd-initial-admin-secret
 
 echo "Your Argo CD password is $ARGO_PASS"
+echo "You can log in at https://argo.$DOMAIN"
 
 echo
 echo "Waiting for Grafana to come online... (this can take a while)"
@@ -65,6 +66,9 @@ done
 GRAFANA_PASS=$(kubectl get secret -n monitoring grafana -o jsonpath="{.data.admin-password}" | base64 -d)
 
 echo "Your Grafana password is $GRAFANA_PASS"
+echo "You can log in at https://grafana.$DOMAIN"
+echo
+echo "It might take a while for TLS certificate to get issued, so bear with security warnings until then"
 echo
 echo "All set! Happy foxing on Civo!"
 echo
