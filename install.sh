@@ -6,54 +6,65 @@ ROKA_ROOT=$(dirname $(realpath $0))
 
 read -erp $'What\'s your Civo API token? (From https://www.civo.com/account/security)\n' TOKEN
 if [ -z "$TOKEN" ]; then
-  echo 'API token is required. Try again.'
+  echo 'API token is required.'
   exit 1
 fi
 
-read -erp $'What\'s your Civo API region? (Default LON1)\n' REGION
+read -erp $'\nWhat\'s your Civo API region? (Default LON1)\n' REGION
 REGION=${REGION:=LON1}
 
-HELM_DRY=
-K8S_DRY=
-
-if [ $# == 1 ] && [ $1 == '--dry-run' ]; then
-  HELM_DRY="--dry-run"
-  K8S_DRY="--dry-run=client"
+read -erp $'\nWhat\'s your email address? (required for domain certificates)\n' EMAIL
+if [ -z "$EMAIL" ]; then
+  echo 'Email is required.'
+  exit 1
 fi
+
+read -erp $'\nWhat domain to use?\n' DOMAIN
+if [ -z "$DOMAIN" ]; then
+  echo 'Domain is required.'
+  exit 1
+fi
+
+echo
 
 set -x
 
-kubectl apply $K8S_DRY -f "$ROKA_ROOT/manual/00-namespaces.yaml"
+# mark civo's storageclass as not-default (want to use bootstrapped longhorn)
+kubectl annotate storageclass civo-volume storageclass.kubernetes.io/is-default-class-
 
-# 01
-helm repo add argo https://argoproj.github.io/argo-helm
-helm install $HELM_DRY --debug -n argo-cd argo-cd argo/argo-cd -f "$ROKA_ROOT/manual/argo-cd-values.yaml"
+# install with the name "argo-cd" so that argo can later manage itself
+helm install \
+  --set email="$EMAIL" \
+  --set domain="$DOMAIN" \
+  --set apiToken="$TOKEN" \
+  --set region="$REGION" \
+  -n argo-cd --create-namespace \
+  argo-cd "$ROKA_ROOT/manual"
 
-kubectl apply $K8S_DRY -f "$ROKA_ROOT/manual/02-system.yaml"
+set +x
 
-# 03
-cat <<EOF | kubectl -n kube-system apply $K8S_DRY -f -
-apiVersion: v1
-kind: Secret
-metadata:
-  name: civo-api-secret
-data:
-  TOKEN: $(echo -n $TOKEN | base64)
-  REGION: $(echo -n $REGION | base64)
-EOF
+echo
+echo "Waiting for Argo CD to come online..."
 
-# wait for argo secret to be created by helm before applying bootstrap
-while ! kubectl -n argo-cd get secret argocd-initial-admin-secret 2>/dev/null; do
-  sleep 1
+while ! kubectl -n argo-cd get secret argocd-initial-admin-secret >/dev/null 2>/dev/null; do
+  sleep 3
 done
 
 ARGO_PASS=$(kubectl -n argo-cd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
-kubectl -n argo-cd delete $K8S_DRY secret argocd-initial-admin-secret
+kubectl -n argo-cd delete secret argocd-initial-admin-secret
 
-# mark civo's storageclass as not-default (want to use bootstrapped longhorn)
-kubectl annotate $K8S_DRY storageclass civo-volume storageclass.kubernetes.io/is-default-class-
-
-kubectl apply $K8S_DRY -f "$ROKA_ROOT/manual/04-bootstrap.yaml"
+echo "Your Argo CD password is $ARGO_PASS"
 
 echo
-echo "All set! Your Argo CD password is $ARGO_PASS"
+echo "Waiting for Grafana to come online... (this can take a while)"
+
+while ! kubectl get secret -n monitoring grafana >/dev/null 2>/dev/null; do
+  sleep 3
+done
+
+GRAFANA_PASS=$(kubectl get secret -n monitoring grafana -o jsonpath="{.data.admin-password}" | base64 -d)
+
+echo "Your Grafana password is $GRAFANA_PASS"
+echo
+echo "All set! Happy foxing on Civo!"
+echo
