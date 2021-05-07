@@ -4,16 +4,19 @@ metadata:
   name: bootstrap
   namespace: argo-cd
   annotations:
-    argocd.argoproj.io/sync-wave: "04"
+    argocd.argoproj.io/sync-wave: "05"
 spec:
   project: system
   source:
     repoURL: https://github.com/valerauko/rokalyuk.git
-    targetRevision: main
+    targetRevision: helm
     path: apps
 
-    directory:
-      recurse: true
+    helm:
+      releaseName: apps
+      values: |
+        domain: {{ .Values.domain }}
+        email: {{ .Values.email }}
 
   destination:
     server: https://kubernetes.default.svc
