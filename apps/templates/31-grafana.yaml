@@ -33,7 +33,7 @@ spec:
         dashboards:
           default:
             cluster-monitoring-for-kubernetes:
-              url: https://raw.githubusercontent.com/valerauko/rokalyuk/helm/apps/static/dashboard.json
+              url: https://raw.githubusercontent.com/valerauko/rokalyuk/main/apps/static/dashboard.json
         datasources:
           datasources.yaml:
             apiVersion: 1
