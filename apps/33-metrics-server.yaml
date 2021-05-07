@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metrics-server
+  namespace: argo-cd
+  annotations:
+    argocd.argoproj.io/sync-wave: "33"
+spec:
+  project: monitoring
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: "*"
+    chart: metrics-server
+
+    helm:
+      releaseName: metrics-server
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+
+  syncPolicy:
+    automated:
+      selfHeal: true
