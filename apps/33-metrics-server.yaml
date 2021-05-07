@@ -6,7 +6,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "33"
 spec:
-  project: monitoring
+  project: system
   source:
     repoURL: https://charts.bitnami.com/bitnami
     targetRevision: "*"
@@ -17,7 +17,7 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: monitoring
+    namespace: kube-system
 
   syncPolicy:
     automated:
