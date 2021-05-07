@@ -6,7 +6,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "07"
 spec:
-  description: Static and WP sites
+  description: Static sites
 
   sourceRepos:
   - '*'

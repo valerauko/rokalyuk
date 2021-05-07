@@ -21,21 +21,15 @@ spec:
           annotations:
             kubernetes.io/ingress.class: traefik
           hosts:
-            - grafana.kitsune.social
+            - grafana.{{ .Values.domain }}
           tls:
             - hosts:
-                - grafana.kitsune.social
+                - grafana.{{ .Values.domain }}
         persistence:
           enabled: true
           type: statefulset
         plugins:
           - grafana-piechart-panel
-        dashboards:
-          default:
-            cluster-monitoring-for-kubernetes:
-              gnetId: 10000
-              revision: 1
-              datasource: Prometheus
         datasources:
           datasources.yaml:
             apiVersion: 1

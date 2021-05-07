@@ -38,10 +38,10 @@ spec:
               kubernetes.io/ingress.class: traefik
               ingress.kubernetes.io/protocol: http
             hosts:
-            - argo.kitsune.social
+            - argo.{{ .Values.domain }}
             tls:
             - hosts:
-              - argo.kitsune.social
+              - argo.{{ .Values.domain }}
         repoServer:
           metrics:
             enabled: true

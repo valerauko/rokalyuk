@@ -25,7 +25,7 @@ spec:
             prometheus.io/path: "/metrics"
             prometheus.io/port: "9100"
         additionalArguments:
-          - "--certificatesresolvers.letsencrypt.acme.email=valerauko@gmail.com"
+          - "--certificatesresolvers.letsencrypt.acme.email={{ .Values.email }}"
           - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
           - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
           - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=httpreq"
@@ -47,9 +47,9 @@ spec:
               enabled: true
               certResolver: letsencrypt
               domains:
-                - main: "*.kitsune.social"
+                - main: "*.{{ .Values.domain }}"
                   sans:
-                    - "kitsune.social"
+                    - "{{ .Values.domain }}"
         providers:
           kubernetesIngress:
             publishedService:
