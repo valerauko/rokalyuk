@@ -23,6 +23,12 @@ You'll need the following installed for the script to run.
 * Prometheus, Loki, Grafana, metrics-server
 * Argo CD (for automation and managing all the above)
 
+## What it does for you
+
+* provision wildcard domain certificates (valid for any subdomain)
+* keep the components listed above up-to-date
+  * in case of Traefik it's following the master branch, which may result in stuff breaking suddenly
+
 ## Credit
 
 The cover photo is by <a href="https://unsplash.com/@aewild?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Amanda Frank</a> on <a href="https://unsplash.com/s/photos/fox?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>.
