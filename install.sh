@@ -42,10 +42,18 @@ data:
   REGION: $(echo -n $REGION | base64)
 EOF
 
-kubectl apply $K8S_DRY -f "$ROKA_ROOT/manual/04-bootstrap.yaml"
+# wait for argo secret to be created by helm before applying bootstrap
+while ! kubectl -n argo-cd get secret argocd-initial-admin-secret 2>/dev/null; do
+  sleep 1
+done
 
 ARGO_PASS=$(kubectl -n argo-cd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 kubectl -n argo-cd delete $K8S_DRY secret argocd-initial-admin-secret
+
+# mark civo's storageclass as not-default (want to use bootstrapped longhorn)
+kubectl annotate $K8S_DRY storageclass civo-volume storageclass.kubernetes.io/is-default-class-
+
+kubectl apply $K8S_DRY -f "$ROKA_ROOT/manual/04-bootstrap.yaml"
 
 echo
 echo "All set! Your Argo CD password is $ARGO_PASS"
