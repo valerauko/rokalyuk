@@ -9,6 +9,13 @@ Rokalyuk ("fox den" in Hungarian) is a way to get your cluster up and running on
 1. clone this repo
 1. run `install.sh` and answer the questions
 
+### Requirements
+
+You'll need the following installed for the script to run.
+
+* helm
+* kubectl
+
 ## What's included
 
 * latest Traefik (following the [master branch](https://github.com/traefik/traefik/tree/master/)) and [Panther](https://github.com/valerauko/panther) (for Let's Encrypt DNS-01 challenge)
