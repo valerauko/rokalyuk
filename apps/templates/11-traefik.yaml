@@ -18,7 +18,7 @@ spec:
       values: |
         image:
           name: valerauko/traefa
-          tag: "2.4.8-32e08f35"
+          tag: "exp-2008"
         deployment:
           podAnnotations:
             prometheus.io/scrape: "true"
@@ -38,7 +38,8 @@ spec:
           - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=httpreq"
           - "--certificatesresolvers.letsencrypt.acme.dnschallenge.delaybeforecheck=60"
           - "--experimental.http3=true"
-          - "--entrypoints.websecure.enablehttp3=true"
+          - "--entrypoints.websecure.http3.enabled=true"
+          - "--entrypoints.websecure.http3.advertisedas=:443"
         env:
           - name: HTTPREQ_ENDPOINT
             value: http://panther.kube-system.svc.cluster.local
