@@ -18,7 +18,7 @@ spec:
       values: |
         image:
           name: valerauko/traefa
-          tag: "exp-2008"
+          tag: "2.4.8-alpha1"
         deployment:
           podAnnotations:
             prometheus.io/scrape: "true"
