@@ -23,7 +23,7 @@ spec:
           podAnnotations:
             prometheus.io/scrape: "true"
             prometheus.io/path: "/metrics"
-            prometheus.io/port: "9100"
+            prometheus.io/port: "9000"
           initContainers:
             - name: volume-permissions
               image: busybox:1.31.1
@@ -39,6 +39,7 @@ spec:
           - "--certificatesresolvers.letsencrypt.acme.dnschallenge.delaybeforecheck=60"
           - "--experimental.http3=true"
           - "--entrypoints.websecure.enablehttp3=true"
+          - "--metrics.prometheus.addServicesLabels=true"
         env:
           - name: HTTPREQ_ENDPOINT
             value: http://panther.kube-system.svc.cluster.local
