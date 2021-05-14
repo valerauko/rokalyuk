@@ -18,7 +18,7 @@ spec:
       values: |
         image:
           name: valerauko/traefa
-          tag: "2.4.8-alpha3"
+          tag: "2.4.8-alpha4"
         deployment:
           podAnnotations:
             prometheus.io/scrape: "true"
@@ -39,6 +39,7 @@ spec:
           - "--certificatesresolvers.letsencrypt.acme.dnschallenge.delaybeforecheck=60"
           - "--experimental.http3=true"
           - "--entrypoints.websecure.http3.enabled=true"
+          - "--entrypoints.websecure.http3.advertisedas=:443"
           - "--metrics.prometheus.addServicesLabels=true"
         env:
           - name: HTTPREQ_ENDPOINT
