@@ -16,9 +16,15 @@ You'll need the following installed for the script to run.
 * helm
 * kubectl
 
+## Deploying applications
+
+If you have multiple applications running in your cluster, it's recommended to use the ["app of apps" pattern](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#app-of-apps) and have Argo CD roll out everything for you declaratively. You would manually add an Application that points to a git folder with your other Application definitions.
+
+However, if you only have one, then create an Application for it and go! There's an [example](example) for reference.
+
 ## What's included
 
-* latest Traefik (following the [master branch](https://github.com/traefik/traefik/tree/master/)) and [Panther](https://github.com/valerauko/panther) (for Let's Encrypt DNS-01 challenge)
+* latest Traefik and [Panther](https://github.com/valerauko/panther) (for Let's Encrypt DNS-01 challenge)
 * Longhorn (as default persistence)
 * Prometheus, Loki, Grafana, metrics-server
 * Argo CD (for automation and managing all the above)
@@ -27,7 +33,6 @@ You'll need the following installed for the script to run.
 
 * provision wildcard domain certificates (valid for any subdomain)
 * keep the components listed above up-to-date
-  * in case of Traefik it's following the master branch, which may result in stuff breaking suddenly
 
 ## Credit
 
