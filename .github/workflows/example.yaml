@@ -5,7 +5,7 @@ on:
     paths:
       - "example/**"
       - ".github/workflows/example.yaml"
-    branches: [ main, feature/example ]
+    branches: [ main ]
 
 jobs:
   create-docker-image:
