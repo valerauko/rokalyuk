@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: example
+  namespace: argo-cd
+spec:
+  project: sites
+  source:
+    repoURL: https://github.com/valerauko/rokalyuk
+    targetRevision: main
+    path: example/k8s
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+
+  syncPolicy:
+    automated:
+      selfHeal: true
