@@ -9,7 +9,7 @@ spec:
   project: system
   source:
     repoURL: https://github.com/valerauko/traefa
-    targetRevision: main
+    targetRevision: 36557db
     path: traefik
 
     helm:
