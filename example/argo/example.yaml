@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: example
+  namespace: default
+spec:
+  project: sites
+  source:
+    repoURL: https://github.com/valerauko/rokalyuk
+    targetRevision: main
+    path: example/k8s
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+
+  syncPolicy:
+    automated:
+      selfHeal: true
