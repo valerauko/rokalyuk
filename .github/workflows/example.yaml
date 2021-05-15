@@ -15,7 +15,6 @@ jobs:
         working-directory: example
         run: |
           set -euo pipefail
-          cd example
           image=valerauko/rokalyuk:$(git rev-parse --short HEAD)
           docker build -t "$image" .
           echo "::set-output name=image::$image"
