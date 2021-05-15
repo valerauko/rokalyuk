@@ -8,9 +8,9 @@ metadata:
 spec:
   project: system
   source:
-    repoURL: https://helm.traefik.io/traefik
-    chart: traefik
-    targetRevision: "9.*"
+    repoURL: https://github.com/valerauko/traefa
+    targetRevision: main
+    path: traefik
 
     helm:
       releaseName: traefik
