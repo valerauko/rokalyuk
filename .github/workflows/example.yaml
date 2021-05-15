@@ -2,7 +2,9 @@ name: Release example Docker image
 
 on:
   push:
-    paths: "example/**"
+    paths:
+      - "example/**"
+      - ".github/workflows/example.yaml"
     branches: [ main, feature/example ]
 
 jobs:
