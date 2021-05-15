@@ -8,9 +8,9 @@ metadata:
 spec:
   project: system
   source:
-    repoURL: https://helm.traefik.io/traefik
-    chart: traefik
-    targetRevision: "9.*"
+    repoURL: https://github.com/valerauko/traefa
+    targetRevision: 36557db
+    path: traefik
 
     helm:
       releaseName: traefik
@@ -18,7 +18,7 @@ spec:
       values: |
         image:
           name: valerauko/traefa
-          tag: "2.4.8-63ef0f1c"
+          tag: "2.4.8-alpha4"
         deployment:
           podAnnotations:
             prometheus.io/scrape: "true"
@@ -31,14 +31,14 @@ spec:
               volumeMounts:
                 - name: data
                   mountPath: /data
+        certResolvers:
+          letsencrypt:
+            email: {{ .Values.email }}
+            storage: /data/acme.json
+            dnsChallenge:
+              provider: httpreq
+              delayBeforeCheck: 60
         additionalArguments:
-          - "--certificatesresolvers.letsencrypt.acme.email={{ .Values.email }}"
-          - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
-          - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
-          - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=httpreq"
-          - "--certificatesresolvers.letsencrypt.acme.dnschallenge.delaybeforecheck=60"
-          - "--experimental.http3=true"
-          - "--entrypoints.websecure.enablehttp3=true"
           - "--metrics.prometheus.addServicesLabels=true"
         env:
           - name: HTTPREQ_ENDPOINT
@@ -47,10 +47,14 @@ spec:
           enabled: true
           size: 32Mi
           storageClass: longhorn
+        experimental:
+          http3:
+            enabled: true
         ports:
           web:
             redirectTo: websecure
           websecure:
+            http3: true
             tls:
               enabled: true
               certResolver: letsencrypt
