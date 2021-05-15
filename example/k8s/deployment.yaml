@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: example-static
-          image: valerauko/rokalyuk:01f2ef7-xxxxxxx
+          image: valerauko/rokalyuk:01f2ef7
           ports:
             - name: http
               containerPort: 80
