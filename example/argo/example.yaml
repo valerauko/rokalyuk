@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: example
-  namespace: default
+  namespace: argo-cd
 spec:
   project: sites
   source:
@@ -12,7 +12,7 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: kube-system
+    namespace: default
 
   syncPolicy:
     automated:
